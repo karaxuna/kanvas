@@ -16,7 +16,7 @@
 		    ], {
 		        strokeStyle: 'green',
 		        lineWidth: 1,
-		        fillStyle: '#8ED6FF'
+		        fillStyle: 'lightgreen'
 		    });
 
 		    scene.add(line);
@@ -31,8 +31,14 @@
 		    scene.mouse.on('move', function(){
 		        var overline = line.pointInside(this.curr);
 
-		        if(overline && this.down)
-		            line.move(this.diff);
+		        if(overline){
+		        	if(this.down)
+		            	line.move(this.diff);
+		            else
+		            	line.options.fillStyle = 'red';
+		        }
+		        else
+		        	line.options.fillStyle = 'lightgreen';
 
 		        update();
 		    });
