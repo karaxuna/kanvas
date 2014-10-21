@@ -368,36 +368,4 @@
 
     })();
 
-    // test
-    var scene = new global.Scene(document.getElementById('squanche').getContext('2d'));
-    var line = new global.Polygon([
-        new global.Point(50, 50),
-        new global.Point(100, 50),
-        new global.Point(100, 100),
-        new global.Point(75, 125),
-        new global.Point(50, 100)
-    ], {
-        strokeStyle: 'green',
-        lineWidth: 1,
-        fillStyle: '#8ED6FF'
-    });
-
-    scene.add(line);
-    update();
-
-    function update(){
-        scene
-            .clear()
-            .draw();
-    }
-
-    scene.mouse.on('move', function(){
-        var overline = line.pointInside(this.curr);
-
-        if(overline && this.down)
-            line.move(this.diff);
-
-        update();
-    });
-
 })(window.kanvas = {});
