@@ -6,19 +6,17 @@
 		<canvas id="mycanvas" width="600" height="340" style="border: solid 1px black;"></canvas>
 		<script type="text/javascript" src="./index.js"></script>
 		<script type="text/javascript">
-		var scene = new kanvas.Scene(document.getElementById('mycanvas').getContext('2d'));
+			var scene = new kanvas.Scene(document.getElementById('mycanvas').getContext('2d'));
+			var circle = new kanvas.Circle(new kanvas.Point(300, 70), 25);
 		    var line = new kanvas.Polygon([
 		        new kanvas.Point(50, 50),
 		        new kanvas.Point(100, 50),
 		        new kanvas.Point(100, 100),
 		        new kanvas.Point(75, 125),
 		        new kanvas.Point(50, 100)
-		    ], {
-		        strokeStyle: 'green',
-		        lineWidth: 1,
-		        fillStyle: 'lightgreen'
-		    });
+		    ]);
 
+		    scene.add(circle);
 		    scene.add(line);
 		    update();
 
@@ -29,17 +27,12 @@
 		    }
 
 		    scene.mouse.on('move', function(){
-		        var overline = line.pointInside(this.curr);
-
-		        if(overline){
-		        	if(this.down)
-		            	line.move(this.diff);
-		            else
-		            	line.options.fillStyle = 'red';
-		        }
-		        else
-		        	line.options.fillStyle = 'lightgreen';
-
+		    	if(this.down){
+			        if(line.pointInside(this.curr))
+			        	line.move(this.diff);
+			        if(circle.pointInside(this.curr))
+			        	circle.move(this.diff);
+			    }
 		        update();
 		    });
 		</script>

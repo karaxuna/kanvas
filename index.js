@@ -271,23 +271,73 @@
 
     })();
 
-    // Polygon
+    // Figure
     (function(){
         var EventTarget = global.EventTarget;
 
-        var Polygon = global.Polygon = function(points, options){
+        var Figure = global.Figure = function(){
             var self = this;
             EventTarget.call(self);
-            self.points = points;
-            self.options = options;
-            self.scene = null;
         };
 
-        _utils.extend(Polygon.prototype, [EventTarget.prototype, {
-            draw: _utils.chain(function(){
+        _utils.extend(Figure.prototype, [EventTarget.prototype]);
+
+    })();
+
+    // Circle
+    (function(){
+        var Figure = global.Figure;
+
+        var Circle = global.Circle = function(center, radius){
+            var self = this;
+            Figure.call(self);
+            self.center = center;
+            self.radius = radius;
+        };
+
+        _utils.extend(Circle.prototype, [Figure.prototype, {
+            draw: _utils.chain(function(scene){
                 var self = this,
-                    context = self.scene.context;
-                    options = self.options;
+                    context = scene.context,
+                    center = self.center,
+                    radius = self.radius;
+
+                context.beginPath();
+                context.arc(center.x, center.y, radius, 0, 2 * Math.PI, false);
+                context.stroke();
+            }),
+
+            pointInside: function(pt){
+                var self = this,
+                    radius = self.radius,
+                    center = self.center;
+
+                return (pt.x - center.x) * (pt.x - center.x) + (pt.y - center.y) * (pt.y - center.y) <= radius * radius;
+            },
+
+            move: _utils.chain(function(vector){
+                var self = this,
+                    center = self.center;
+
+                center.move(vector);
+            })
+        }]);
+    })();
+
+    // Polygon
+    (function(){
+        var Figure = global.Figure;
+
+        var Polygon = global.Polygon = function(points){
+            var self = this;
+            Figure.call(self);
+            self.points = points;
+        };
+
+        _utils.extend(Polygon.prototype, [Figure.prototype, {
+            draw: _utils.chain(function(scene){
+                var self = this,
+                    context = scene.context;
                     points = self.points;
 
                 context.beginPath();
@@ -298,18 +348,8 @@
                     context.lineTo(point.x, point.y);
                 }
 
-                context.lineTo(points[0].x, points[0].y);
-
-                if(options.fillStyle){
-                    context.fillStyle = options.fillStyle;
-                    context.fill();
-                }
-
-                if(options.lineWidth){
-                    context.strokeStyle = options.strokeStyle || 'black';
-                    context.lineWidth = options.lineWidth;
-                    context.stroke();
-                }
+                context.closePath();
+                context.stroke();
             }),
 
             pointInside: function(pt){
@@ -351,7 +391,6 @@
             add: _utils.chain(function(polygon, index){
                 var self = this;
                 self.polygons.splice(index === undefined ? self.polygons.length - 1 : index, 0, polygon);
-                polygon.scene = self;
             }),
 
             draw: _utils.chain(function(){
