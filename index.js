@@ -227,6 +227,17 @@
 
     })();
 
+    // Size
+    (function(){
+
+        var Size = global.Size = function(width, height){
+            var self = this;
+            self.width = width;
+            self.height = height;
+        };
+
+    })();
+
     // Mouse
     (function() {
         var EventTarget = global.EventTarget;
@@ -370,6 +381,87 @@
 
                 for(var i = 0, point; point = points[i]; i++)
                     point.move(vector);
+            })
+        }]);
+
+    })();
+
+    // Font
+    (function(){
+
+        var Font = global.Font = function(style, size, family){
+            var self = this;
+            self.style = style;
+            self.size = size;
+            self.family = family;
+        };
+
+        _utils.extend(Font.prototype, [{
+            getCombinedText: function(){
+                var self = this,
+                    style = self.style,
+                    size = self.size,
+                    family = self.family,
+                    result = '';
+
+                if(style) result += style;
+                if(size) result += (result ? ' ' : '') + size + 'px';
+                if(family) result += (result ? ' ' : '') + family;
+                return result;
+            }
+        }]);
+
+    })();
+
+    // Text
+    (function(){
+        var Figure = global.Figure;
+        var Size = global.Size;
+
+        var Text = global.Text = function(text, point, font){
+            var self = this;
+            self.text = text;
+            self.point = point;
+            self.font = font;
+        };
+
+        _utils.extend(Text.prototype, [Figure.prototype, {
+            draw: _utils.chain(function(scene){
+                var self = this,
+                    point = self.point,
+                    text = self.text,
+                    font = self.font,
+                    context = scene.context;
+
+                context.textBaseline = 'top';
+                context.font = font.getCombinedText();
+                context.fillText(text, point.x, point.y);
+            }),
+
+            getSize: function(){
+                var self = this,
+                    text = self.text,
+                    font = self.font,
+                    vctx = document.createElement('canvas').getContext('2d');
+
+                vctx.textBaseline = 'top';
+                vctx.font = font.getCombinedText();
+                return new Size(vctx.measureText(text).width, font.size);
+            },
+
+            pointInside: function(pt){
+                var self = this,
+                    point = self.point,
+                    size = self.getSize();
+
+                return pt.x >= point.x && pt.x <= point.x + size.width && pt.y >= point.y && pt.y <= point.y + size.height;
+            },
+
+            move: _utils.chain(function(vector){
+                var self = this,
+                    point = self.point;
+
+                point.move(vector);
             })
         }]);
 
