@@ -322,6 +322,7 @@
                 center.move(vector);
             })
         }]);
+        
     })();
 
     // Polygon
