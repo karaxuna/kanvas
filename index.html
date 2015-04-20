@@ -3,44 +3,23 @@
 		<title> kanvas </title>
 	</head>
 	<body>
-		<canvas id="mycanvas" width="600" height="340" style="border: solid 1px black;"></canvas>
+		<!-- kanvas -->
+		<script type="text/javascript"> window.kanvas = {}; </script>
+		<script type="text/javascript" src="./src/utils.js"></script>
+		<script type="text/javascript" src="./src/EventTarget.js"></script>
+		<script type="text/javascript" src="./src/Vector.js"></script>
+		<script type="text/javascript" src="./src/Point.js"></script>
+		<script type="text/javascript" src="./src/Size.js"></script>
+		<script type="text/javascript" src="./src/Mouse.js"></script>
+		<script type="text/javascript" src="./src/Figure.js"></script>
+		<script type="text/javascript" src="./src/Circle.js"></script>
+		<script type="text/javascript" src="./src/Polygon.js"></script>
+		<script type="text/javascript" src="./src/Font.js"></script>
+		<script type="text/javascript" src="./src/Text.js"></script>
+		<script type="text/javascript" src="./src/Scene.js"></script>
+
+		<!-- example -->
+		<canvas id="canvas" width="600" height="340" style="border: solid 1px black;"></canvas>
 		<script type="text/javascript" src="./index.js"></script>
-		<script type="text/javascript" src="./pair/index.js"></script>
-		
-		<script type="text/javascript">
-			var scene = new kanvas.Scene(document.getElementById('mycanvas').getContext('2d'));
-			var circle = new kanvas.Circle(new kanvas.Point(300, 70), 25);
-			var text = new kanvas.Text('konichiva bros :)))', new kanvas.Point(150, 150), new kanvas.Font('italic', 20, 'Calibri'));
-		    var line = new kanvas.Polygon([
-		        new kanvas.Point(50, 50),
-		        new kanvas.Point(100, 50),
-		        new kanvas.Point(100, 100),
-		        new kanvas.Point(75, 125),
-		        new kanvas.Point(50, 100)
-		    ]);
-
-		    scene.add(circle);
-		    scene.add(text);
-		    scene.add(line);
-		    update();
-
-		    function update(){
-		        scene
-		            .clear()
-		            .draw();
-		    }
-
-		    scene.mouse.on('move', function(){
-		    	if(this.down){
-			        if(line.pointInside(this.curr))
-			        	line.move(this.diff);
-			        if(circle.pointInside(this.curr))
-			        	circle.move(this.diff);
-			        if(text.pointInside(this.curr))
-			        	text.move(this.diff);
-			    }
-		        update();
-		    });
-		</script>
 	</body>
 </html>
