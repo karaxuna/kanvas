@@ -1,11 +1,12 @@
 (function (global) {
     var utils = global.utils,
-        Figure = global.Figure;
+        Figure = global.Figure,
+        Point = global.Point,
+        Vector = global.Vector;
 
-    var Circle = global.Circle = function (center, radius) {
+    var Circle = global.Circle = function (position, radius) {
         var self = this;
-        Figure.call(self);
-        self.center = center;
+        Figure.call(self, position);
         self.radius = radius;
     };
 
@@ -13,7 +14,7 @@
         draw: utils.chain(function (scene) {
             var self = this,
                 context = scene.context,
-                center = self.center,
+                center = self.getCenter(),
                 radius = self.radius;
 
             context.beginPath();
@@ -24,17 +25,17 @@
         pointInside: function (pt) {
             var self = this,
                 radius = self.radius,
-                center = self.center;
+                center = self.getCenter();
 
             return (pt.x - center.x) * (pt.x - center.x) + (pt.y - center.y) * (pt.y - center.y) <= radius * radius;
         },
 
-        move: utils.chain(function (vector) {
-            var self = this,
-                center = self.center;
-
-            center.move(vector);
-        })
+        getCenter: function () {
+            var self = this;
+            var center = new Point(self.position.x, self.position.y);
+            center.move(new Vector(self.radius, self.radius));
+            return center;
+        }
     }]);
 
 })(window.kanvas);
