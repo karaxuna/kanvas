@@ -2,13 +2,13 @@
     var utils = global.utils,
         Figure = global.Figure;
 
-    var Circle = global.Circle = function (figures) {
+    var Combined = global.Combined = function (position, figures) {
         var self = this;
-        Figure.call(self);
+        Figure.call(self, position);
         self.figures = figures;
     };
 
-    utils.extend(Circle.prototype, [Figure.prototype, {
+    utils.extend(Combined.prototype, [Figure.prototype, {
         draw: utils.chain(function (scene) {
             var self = this;
             self.figures.forEach(function (figure) {
@@ -21,14 +21,7 @@
             return self.figures.some(function (figure) {
                 return figure.pointInside(pt);
             });
-        },
-
-        move: utils.chain(function (vector) {
-            var self = this,
-                center = self.center;
-
-            center.move(vector);
-        })
+        }
     }]);
 
 })(window.kanvas);

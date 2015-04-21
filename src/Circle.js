@@ -32,9 +32,7 @@
 
         getCenter: function () {
             var self = this;
-            var center = new Point(self.position.x, self.position.y);
-            center.move(new Vector(self.radius, self.radius));
-            return center;
+            return new Point(self.position.x + self.radius, self.position.y + self.radius);
         }
     }]);
 
