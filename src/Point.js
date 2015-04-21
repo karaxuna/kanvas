@@ -12,7 +12,12 @@
             var self = this;
             self.x += vector.x;
             self.y += vector.y;
-        })
+        }),
+
+        copy: function () {
+            var self = this;
+            return new Point(self.x, self.y);
+        }
     }]);
 
 })(window.kanvas);

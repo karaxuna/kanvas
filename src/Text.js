@@ -3,9 +3,9 @@
         Figure = global.Figure,
         Size = global.Size;
 
-    var Text = global.Text = function (position, text, font) {
+    var Text = global.Text = function (parent, absPosition, text, font) {
         var self = this;
-        Figure.call(self, position);
+        Figure.call(self, parent, absPosition);
         self.text = text;
         self.font = font;
     };
@@ -13,14 +13,14 @@
     utils.extend(Text.prototype, [Figure.prototype, {
         draw: utils.chain(function (scene) {
             var self = this,
-                position = self.position,
+                absPosition = self.getAbsPosition(),
                 text = self.text,
                 font = self.font,
                 context = scene.context;
 
             context.textBaseline = 'top';
             context.font = font.getCombinedText();
-            context.fillText(text, position.x, position.y);
+            context.fillText(text, absPosition.x, absPosition.y);
         }),
 
         getSize: function () {
@@ -36,10 +36,11 @@
 
         pointInside: function (pt) {
             var self = this,
-                position = self.position,
+                absPosition = self.getAbsPosition(),
                 size = self.getSize();
 
-            return pt.x >= position.x && pt.x <= position.x + size.width && pt.y >= position.y && pt.y <= position.y + size.height;
+            return pt.x >= absPosition.x && pt.x <= absPosition.x + size.width &&
+                pt.y >= absPosition.y && pt.y <= absPosition.y + size.height;
         }
     }]);
 

@@ -2,9 +2,9 @@
     var utils = global.utils,
         Figure = global.Figure;
 
-    var Combined = global.Combined = function (position, figures) {
+    var Combined = global.Combined = function (parent, position, figures) {
         var self = this;
-        Figure.call(self, position);
+        Figure.call(self, parent, position);
         self.figures = figures;
     };
 

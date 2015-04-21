@@ -3,9 +3,9 @@
         Figure = global.Figure,
         Point = global.Point;
 
-    var Polygon = global.Polygon = function (position, points) {
+    var Polygon = global.Polygon = function (parent, position, points) {
         var self = this;
-        Figure.call(self, position);
+        Figure.call(self, parent, position);
         self.points = points;
     };
 
@@ -13,15 +13,15 @@
         draw: utils.chain(function (scene) {
             var self = this,
                 context = scene.context,
-                position = self.position,
+                absPosition = self.getAbsPosition(),
                 points = self.points;
 
             context.beginPath();
-            context.moveTo(position.x + points[0].x, position.y + points[0].y);
+            context.moveTo(absPosition.x + points[0].x, absPosition.y + points[0].y);
 
             for (var i = 1; i < points.length; i++) {
                 var point = points[i];
-                context.lineTo(position.x + point.x, position.y + point.y);
+                context.lineTo(absPosition.x + point.x, absPosition.y + point.y);
             }
 
             context.closePath();
@@ -31,11 +31,11 @@
         pointInside: function (pt) {
             var self = this,
                 points = self.points,
-                position = self.position;
+                absPosition = self.getAbsPosition();
 
             for (var rpointi, rpointj, c = false, i = -1, l = points.length, j = l - 1; ++i < l; j = i) {
-                rpointi = new Point(position.x + points[i].x, position.y + points[i].y);
-                rpointj = new Point(position.x + points[j].x, position.y + points[j].y);
+                rpointi = new Point(absPosition.x + points[i].x, absPosition.y + points[i].y);
+                rpointj = new Point(absPosition.x + points[j].x, absPosition.y + points[j].y);
 
                 ((rpointi.y <= pt.y && pt.y < rpointj.y) || (rpointj.y <= pt.y && pt.y < rpointi.y)) &&
                 (pt.x < (rpointj.x - rpointi.x) * (pt.y - rpointi.y) / (rpointj.y - rpointi.y) + rpointi.x) &&

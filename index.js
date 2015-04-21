@@ -1,7 +1,10 @@
 var scene = new kanvas.Scene(document.getElementById('canvas').getContext('2d'));
-var circle = new kanvas.Circle(new kanvas.Point(300, 70), 25);
-var text = new kanvas.Text(new kanvas.Point(150, 150), 'konichiva bros :)))', new kanvas.Font('italic', 20, 'Calibri'));
-var line = new kanvas.Polygon(new kanvas.Point(10, 10), [
+
+// text inside circle
+var circle = new kanvas.Circle(null, new kanvas.Point(300, 70), 25);
+var text = new kanvas.Text(circle, new kanvas.Point(0, 0), 'konichiva bros :)))', new kanvas.Font('italic', 20, 'Calibri'));
+
+var line = new kanvas.Polygon(null, new kanvas.Point(10, 10), [
     new kanvas.Point(50, 50),
     new kanvas.Point(100, 50),
     new kanvas.Point(100, 100),
